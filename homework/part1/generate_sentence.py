@@ -31,3 +31,4 @@ if __name__ == "__main__":
     # print(generate(create_grammar(human,split="=",line_split="\n"),target="human"))
     for item in generate_n(create_grammar(human,split="=",line_split="\n"),target="human",n=10):
         print(item)
+        print(item)
