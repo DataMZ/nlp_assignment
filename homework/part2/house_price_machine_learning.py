@@ -6,11 +6,13 @@ import matplotlib.pyplot as plt
 import random
 
 
-def price(rm,k,b):
+def price(rm, k, b):
     return k * rm + b
 
-def loss(y,y_hat):
-    return sum((y_i - y_hat_i) ** 2 for y_i,y_hat_i in zip(list(y),list(y_hat))) / len(list(y))
+
+def loss(y, y_hat):
+    return sum((y_i - y_hat_i) ** 2 for y_i, y_hat_i in zip(list(y), list(y_hat))) / len(list(y))
+
 
 def draw_rm_and_price():
     plt.scatter(X[:, 5], y)
@@ -37,12 +39,13 @@ def partial_b(y, y_hat):
 
     return -2 / n * gradient
 
+
 if __name__ == "__main__":
 
     data = load_boston()
-    X,y = data["data"],data["target"]
+    X, y = data["data"], data["target"]
 
-    X_rm = X[:,5]
+    X_rm = X[:, 5]
     # k = random.randint(-100,100)
     # b = random.randint(-100,100)
     # print(k)
@@ -50,8 +53,6 @@ if __name__ == "__main__":
     # price_by_random_k_and_b = [price(r,k,b) for r in X_rm]
     # plt.scatter(X_rm, price_by_random_k_and_b)
     # plt.show()
-
-
 
     # First-Method:Random generation: get best k and best b
     # trying_times = 2000
@@ -134,12 +135,13 @@ if __name__ == "__main__":
         if current_loss < min_loss:  # performance became better
             min_loss = current_loss
             if i % 50 == 0:
-                print('When time is : {}, get best_k: {} best_b: {}, and the loss is: {}'.format(i, current_k, current_b,
-                                                                                                 min_loss))
+                print(
+                    'When time is : {}, get best_k: {} best_b: {}, and the loss is: {}'.format(i, current_k, current_b,
+                                                                                               min_loss))
         k_gradient = partial_k(X_rm, y, price_by_k_and_b)
         b_gradient = partial_b(y, price_by_k_and_b)
 
         current_k = current_k + (-1 * k_gradient) * learning_rate
         current_b = current_b + (-1 * b_gradient) * learning_rate
-
-
+    # learning rate is too big to converge to a smaller loss.
+    #
