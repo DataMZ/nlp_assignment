@@ -33,9 +33,8 @@ def flatten(x):
     return result
 
 if __name__ == "__main__":
-    a = {}
-    a["1"] = []
-    print(a.get("1").append("2"))
+    a = [1,2]
+    print(a.pop())
     print(a)
 
 
