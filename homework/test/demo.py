@@ -2,11 +2,16 @@
 # -*- coding: utf-8 -*-
 import re
 from collections.abc import Iterable
+from functools import lru_cache
+
 from geopy.geocoders import Nominatim
 from urllib import parse
 import hashlib
 import requests
 import json
+import math
+
+
 
 
 def get_url(address):
@@ -32,10 +37,53 @@ def flatten(x):
             result.append(el)
     return result
 
+@lru_cache(maxsize=2 ** 10)
+def geo_distance(origin, destination):
+    """
+    Calculate the Haversine distance.
+
+    Parameters
+    ----------
+    origin : tuple of float
+        (lat, long)
+    destination : tuple of float
+        (lat, long)
+    Returns
+    -------
+    distance_in_km : float
+
+    Examples
+    --------
+     origin = (48.1372, 11.5756)  # Munich
+     destination = (52.5186, 13.4083)  # Berlin
+     round(distance(origin, destination), 1) 504.2
+    """
+    lat1, lon1 = origin
+    lat2, lon2 = destination
+    radius = 6371  # km
+
+    dlat = math.radians(lat2 - lat1)
+    dlon = math.radians(lon2 - lon1)
+    a = (math.sin(dlat / 2) * math.sin(dlat / 2) +
+         math.cos(math.radians(lat1)) * math.cos(math.radians(lat2)) *
+         math.sin(dlon / 2) * math.sin(dlon / 2))
+    c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
+    d = radius * c
+    return d
+
+
 if __name__ == "__main__":
-    a = [1,2]
-    print(a.pop())
-    print(a)
+    import matplotlib
 
+    print(matplotlib.__path__)
 
+    # a= {1:2,2:3}
+    # print(list(zip(a.keys(),a.values())) )
+    # print(list(a))
+    # print(a)
 
+    dic = {0: (-41, -81), 1: (-39, -71), 2: (-2, 87)}
+    print(geo_distance(dic[0],dic[1]))
+    print(geo_distance(dic[1],dic[2]))
+    print(geo_distance(dic[0],dic[1]) + geo_distance(dic[1],dic[2]))
+    print(geo_distance(dic[0],dic[2]) + geo_distance(dic[2],dic[1]))

@@ -89,7 +89,7 @@ def plt_beijing_subway_line():
     beijing_subway_link = defaultdict(list)
     beijing_subway_link.update(beijing_subway_link_src)
     beijing_subway_graph = nx.Graph(beijing_subway_link)
-    nx.draw(beijing_subway_graph, beijing_subway_geo_dict, with_labels=False, node_size=10)
+    nx.draw(beijing_subway_graph, beijing_subway_geo_dict, with_labels=False, node_size=10,font_size=6)
     plt.show()
 
 
