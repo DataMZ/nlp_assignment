@@ -25,13 +25,21 @@ def sentence_segment(text):
 
 
 def main():
-    write_file = open("", "w", encoding="utf-8")
-    with open("", "r", encoding="utf-8") as read_file:
-        line = read_file.readline()
-        sentence_list = sentence_segment(line)
-        for sentence in sentence_list:
-            seg_list = jieba.cut(sentence, cut_all=False)
-            write_file.write(" ".join(seg_list))
+    write_file = open("D:/nlp/corpus/clean/word2vec_corpus-1.txt", "w", encoding="utf-8")
+    line_num = 0
+    with open("D:/nlp/corpus/sohu-20130820-20161031/sohu-20130820-20161031.txt", "r", encoding="utf-8") as read_file:
+        while 1:
+            line = read_file.readline()
+            if not line:
+                break
+            sentence_list = sentence_segment(line.split("`1`2")[2])
+            for sentence in sentence_list:
+                seg_list = jieba.cut(sentence, cut_all=False)
+                write_file.write(" ".join(seg_list))
+            line_num += 1
+            if line_num % 10000 == 0:
+                print("finish {}".format(line_num))
+                write_file.flush()
 
 
 if __name__ == '__main__':

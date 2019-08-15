@@ -6,7 +6,7 @@ from gensim.test.utils import datapath
 
 
 def main():
-    sentences = LineSentence(datapath('lee_background.cor'))
+    sentences = LineSentence(datapath('D:/nlp/corpus/clean/word2vec_corpus-1.txt'))
     model = word2vec.Word2Vec(sentences, size=256, window=5, min_count=5, workers=3)
     model.save("D:/nlp/model/word2vec/word2vec.model")
 

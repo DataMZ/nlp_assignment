@@ -12,8 +12,6 @@ import json
 import math
 
 
-
-
 def get_url(address):
     # 以get请求为例http://api.map.baidu.com/geocoder/v2/?address=百度大厦&output=json&ak=你的ak
     queryStr = '/geocoder/v2/?address=%s&output=json&ak=mAiGweYSlAt0pGYDOetmyOByRUEzpiSG' % address
@@ -36,6 +34,7 @@ def flatten(x):
         else:
             result.append(el)
     return result
+
 
 @lru_cache(maxsize=2 ** 10)
 def geo_distance(origin, destination):
@@ -73,17 +72,25 @@ def geo_distance(origin, destination):
 
 
 if __name__ == "__main__":
-    import matplotlib
-
-    print(matplotlib.__path__)
-
     # a= {1:2,2:3}
     # print(list(zip(a.keys(),a.values())) )
     # print(list(a))
     # print(a)
+    line_count = 0
+    b = open("D:/nlp/corpus/clean/word2vec_corpus-3.txt", "w", encoding="utf-8")
+    with open("D:/nlp/corpus/clean/word2vec_corpus-1.txt", "r", encoding="utf-8") as a:
+        while 1:
+            line = a.readline()
+            if not line:
+                break
+            b.write(line)
+            line_count += 1
+            if line_count % 10000 == 0:
+                b.flush()
+                print("finish {}".format(line_count))
+            if line_count == 50000:
+                break
 
-    dic = {0: (-41, -81), 1: (-39, -71), 2: (-2, 87)}
-    print(geo_distance(dic[0],dic[1]))
-    print(geo_distance(dic[1],dic[2]))
-    print(geo_distance(dic[0],dic[1]) + geo_distance(dic[1],dic[2]))
-    print(geo_distance(dic[0],dic[2]) + geo_distance(dic[2],dic[1]))
+
+
+
