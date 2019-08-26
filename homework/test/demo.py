@@ -3,14 +3,14 @@
 import re
 from collections.abc import Iterable
 from functools import lru_cache
-
+import numpy as np
 from geopy.geocoders import Nominatim
 from urllib import parse
 import hashlib
 import requests
 import json
 import math
-
+from collections import Counter
 
 def get_url(address):
     # 以get请求为例http://api.map.baidu.com/geocoder/v2/?address=百度大厦&output=json&ak=你的ak
@@ -76,21 +76,40 @@ if __name__ == "__main__":
     # print(list(zip(a.keys(),a.values())) )
     # print(list(a))
     # print(a)
-    line_count = 0
-    b = open("D:/nlp/corpus/clean/word2vec_corpus-3.txt", "w", encoding="utf-8")
-    with open("D:/nlp/corpus/clean/word2vec_corpus-1.txt", "r", encoding="utf-8") as a:
-        while 1:
-            line = a.readline()
-            if not line:
-                break
-            b.write(line)
-            line_count += 1
-            if line_count % 10000 == 0:
-                b.flush()
-                print("finish {}".format(line_count))
-            if line_count == 50000:
-                break
+    # line_count = 0
+    # b = open("D:/nlp/corpus/clean/word2vec_corpus-3.txt", "w", encoding="utf-8")
+    # with open("D:/nlp/corpus/clean/word2vec_corpus-1.txt", "r", encoding="utf-8") as a:
+    #     while 1:
+    #         line = a.readline()
+    #         if not line:
+    #             break
+    #         b.write(line)
+    #         line_count += 1
+    #         if line_count % 10000 == 0:
+    #             b.flush()
+    #             print("finish {}".format(line_count))
+    #         if line_count == 50000:
+    #             break
 
+    # from sklearn.feature_extraction.text import TfidfVectorizer
+    # corpus = [
+    #     'This is the first document.',
+    #     'This document is the second document.',
+    #     'And this is the third one.',
+    #     'Is this the first document?']
+    # vectorizer = TfidfVectorizer()
+    # X = vectorizer.fit_transform(corpus)
+    # print(X )
+    # print(vectorizer.get_feature_names())
 
+    # import random
+    # print(random.random())
+    #
+    #
+    # idxTest = random.sample([(1,2),(3,4),(2,3)], 1)
+    # print(idxTest)
+    # print(round(13.1))
 
+    # print(Counter([1,2,3,2,3]).most_common(1))
+    print(np.sqrt(np.sum(np.square([1,2,3]),axis=0 )) )
 
