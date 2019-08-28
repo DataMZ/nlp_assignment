@@ -14,6 +14,10 @@ from collections import Counter
 import numpy as np
 import time
 
+import os
+os.chdir("D:/work_files/pycharm_codes/nlp_assignment")
+
+
 """
  knn 这种方式如果数据量很大的情况下，会导致数据计算复杂度增大
 """
@@ -75,18 +79,18 @@ def knn_model(X, y):
 
 
 def cos_distance(x1, x2):
-    x1_abs = np.sqrt(np.sum(np.square(x1.values),axis=0))
-    x2_abs = np.sqrt(np.sum(np.square(x2.values),axis=0))
-    x1_x2_interset = set(x1.keys) & set(x2.keys)
-    x1_x2_dot = np.sum([x1[item]*x2[item] for item in x1_x2_interset])
-    return x1_x2_dot/(x1_abs * x2_abs)
+    x1_abs = np.sqrt(np.sum(np.square(list(x1.values())), axis=0))
+    x2_abs = np.sqrt(np.sum(np.square(list(x2.values())), axis=0))
+    x1_x2_interset = set(x1.keys()) & set(x2.keys())
+    x1_x2_dot = np.sum([x1[item] * x2[item] for item in x1_x2_interset])
+    return x1_x2_dot / (x1_abs * x2_abs)
 
 
-def knn_predict(x, X, y, k=10):
+def knn_predict(x, X, y, k=5):
     top_k_list = []
     max_top_k_distance = 10000000000000
     for x_, y_ in knn_model(X, y):
-        distance = cos_distance(x, x_)
+        distance = cos_distance(dict(x), dict(x_))
         if len(top_k_list) != 0:
             max_top_k_distance = max(item[1] for item in top_k_list)
         if len(top_k_list) < k:
@@ -112,20 +116,22 @@ def main():
     model, dictionary = load_model_by_gensim()
     train_y_all = list(raw_data["is_xinhua"])
     train_x_all = []
+    result_file = open("homework/part7/result/result_file.txt","w")
     for train_x in raw_data["content"]:
         string_list = str(train_x).split(" ")
         string_bow = dictionary.doc2bow(string_list)
         train_x_all.append(model[string_bow])
-    for validation_x in validation_data["content"]:
+    for validation_x,validation_y in zip(validation_data["content"],validation_data["is_xinhua"]):
         string_list = str(validation_x).split(" ")
         string_bow = dictionary.doc2bow(string_list)
-        print(knn_predict(string_bow, train_x_all, train_y_all))
-        break
+        predict_y = knn_predict(string_bow, train_x_all, train_y_all)
+        result_file.write("{},{}\n".format(validation_y,predict_y))
+        result_file.flush()
+    result_file.close()
     end = time.time()
     seconds = end - start
-    m,s = divmod(seconds,60)
-    h,m = divmod(m,60)
-    # for validation
+    m, s = divmod(seconds, 60)
+    h, m = divmod(m, 60)
     print("%02d:%02d:%02d" % (h, m, s))
 
 

@@ -111,5 +111,6 @@ if __name__ == "__main__":
     # print(round(13.1))
 
     # print(Counter([1,2,3,2,3]).most_common(1))
-    print(np.sqrt(np.sum(np.square([1,2,3]),axis=0 )) )
+    # print(np.sqrt(np.sum(np.square([1,2,3]),axis=0 )) )
+    print(list(dict([(1,2)]).values()) )
 
